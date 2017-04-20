@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>[%d{yyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{35}:%line - %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="biz" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>../logs/biz.log</file>
+    <encoder>
+      <pattern>[%d{yyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{35}:%line - %m%n</pattern>
+    </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>../logs/biz.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>10GB</totalSizeCap>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>500MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+  </appender>
+
+  <appender name="data" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>../logs/data.log</file>
+    <encoder>
+      <pattern>[%d{yyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{35}:%line - %m%n</pattern>
+    </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>../logs/data.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>10GB</totalSizeCap>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>500MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+  </appender>
+
+  <appender name="pipeline" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>../logs/pipeline.log</file>
+    <encoder>
+      <pattern>[%d{yyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{35}:%line - %m%n</pattern>
+    </encoder>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>../logs/pipeline.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <maxHistory>5</maxHistory>
+      <totalSizeCap>10GB</totalSizeCap>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>50MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+  </appender>
+
+  <logger name="com.e6wifi.bitflow.data" level="info" additivity="false">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="data"/>
+  </logger>
+
+  <logger name="com.e6wifi.bitflow" level="debug" additivity="false">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="biz"/>
+  </logger>
+
+  <logger name="com.e6wifi" level="info" additivity="false">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="biz"/>
+  </logger>
+
+  <logger name="com.orctom.pipeline" level="info" additivity="false">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="pipeline"/>
+  </logger>
+
+  <logger name="com.orctom.rmq" level="info" additivity="false">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="pipeline"/>
+  </logger>
+
+  <root level="warn">
+    <appender-ref ref="stdout"/>
+    <appender-ref ref="biz"/>
+  </root>
+</configuration>
