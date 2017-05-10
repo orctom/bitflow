@@ -75,15 +75,29 @@ start() {
   cd ${work_dir}
   nohup ${JAVA_HOME}/bin/java ${JAVA_OPTS} -jar *.jar >/dev/null &
   echo $! > ${pid_file}
-  sleep 1
-  status
+
+  for i in $(seq 1 10); do
+    sleep 1
+    if is_running; then break; fi
+    log_progress_msg "."
+  done
+  if is_running; then
+    echo "${app_name} is ${fg_blue}running${reset_color}, pid: ${fg_blue}`cat ${pid_file}`${reset_color}"
+  else
+    echo "Failed to start ${app_name}"
+    rm -f ${pid_file}
+  fi
 }
 
 stop() {
   echo "stopping..."
   if is_running; then
     kill `cat ${pid_file}`
-    sleep 2
+    for i in $(seq 1 10); do
+      sleep 1
+      if ! is_running; then break; fi
+      log_progress_msg "."
+    done
     if is_running; then
       echo "Failed to stop, ${app_name} is still running"
     else
